@@ -1,26 +1,48 @@
+body {
+  margin: 1em auto;
+  max-width: 600px;
+}
+
 .pages-nav {
   list-style: none;
-  margin: 3em;
-  text-align: center;
+  margin: 2em 0;
+  padding: 0;
 }
 
 .pages-nav li {
   display: inline;
-  margin: 0 1em;
+  margin-right: 2em;
 }
 
 .search-bar {
-  margin: 3em;
-  text-align: center;
+  margin: 2em 0;
 }
 
 .content-placeholder {
-  padding: 3em;
+  padding: 4em;
   border: 1px solid;
   text-align: center;
 }
 
+.grid {
+  overflow: hidden;
+}
+
+.grid-col {
+  width: 69%;
+  float: right;
+}
+
+.grid-col + .grid-col {
+  width: 29%;
+  float: left;
+}
+
+.content-box {
+  padding: 1em;
+  border: 1px solid;
+}
+
 .footer {
-  margin-top: 3em;
-  text-align: center;
+  margin-top: 2em;
 }
