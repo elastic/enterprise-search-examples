@@ -1,4 +1,8 @@
 import Head from 'next/head'
+import Link from 'next/link'
+import Header from '../components/header'
+import Footer from '../components/footer'
+import ArticlesList from '../components/articles-list'
 
 export default function ArchivePage () {
   return (
@@ -6,42 +10,14 @@ export default function ArchivePage () {
       <Head>
         <title>Archive</title>
       </Head>
-      <ul className="pages-nav">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="articles.html">Articles</a></li>
-      </ul>
-      <p className="search-bar">
-        <input type="search" />
-        <input type="submit" value="Search" />
-      </p>
+
+      <Header />
+
       <h1>Archive</h1>
-      <ul>
-        <li>
-          <p>
-            <a href="article.html">Article</a>
-            <br />
-            Published <var>year</var> by <var>author</var>
-          </p>
-        </li>
-        <li>
-          <p>
-            <a href="article.html">Article</a>
-            <br />
-            Published <var>year</var> by <var>author</var>
-          </p>
-        </li>
-        <li>
-          <p>
-            <a href="article.html">Article</a>
-            <br />
-            Published <var>year</var> by <var>author</var>
-          </p>
-        </li>
-      </ul>
-      <p className="footer">
-        Thanks for reading!
-        <a href="about.html">About</a> this site.
-      </p>
+
+      <ArticlesList />
+
+      <Footer />
     </>
   )
 }

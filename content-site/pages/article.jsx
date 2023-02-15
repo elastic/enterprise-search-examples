@@ -1,4 +1,7 @@
 import Head from 'next/head'
+import Link from 'next/link'
+import Header from '../components/header'
+import Footer from '../components/footer'
 
 export default function ArticlePage () {
   return (
@@ -6,21 +9,14 @@ export default function ArticlePage () {
       <Head>
         <title>Article</title>
       </Head>
-      <ul className="pages-nav">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="articles.html">Articles</a></li>
-      </ul>
-      <p className="search-bar">
-        <input type="search" />
-        <input type="submit" value="Search" />
-      </p>
+
+      <Header />
+
       <h1>Article</h1>
-      <p>Published <a href="archive.html">year</a> by <a href="author.html">author</a></p>
+      <p>Published <Link href="/archive">year</Link> by <Link href="/author">author</Link></p>
       <p className="content-placeholder"><var>Article content...</var></p>
-      <p className="footer">
-        Thanks for reading!
-        <a href="about.html">About</a> this site.
-      </p>
+
+      <Footer />
     </>
   )
 }
