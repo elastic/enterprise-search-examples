@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Header from '../components/header'
-import Footer from '../components/footer'
-import ArticlesList from '../components/articles-list'
+import Header from '../../components/header'
+import Footer from '../../components/footer'
+import ArticlesList from '../../components/articles-list'
 
 export default function ArticlesPage () {
   return (
