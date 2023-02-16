@@ -1,29 +1,19 @@
 import Link from 'next/link'
 
-export default function ArticlesList () {
+import { getUrl } from '../lib/data.js'
+
+export default function ArticlesList ({ articles }) {
+  const listItems = articles.map(({ id, name, authorName, archiveName }) =>
+    <li key={id}>
+      <p>
+        <Link href={getUrl('article', id)}>{name}</Link>
+        <br />
+        Published by <em>{authorName}</em> in <em>{archiveName}</em>
+      </p>
+    </li>
+  );
+
   return (
-    <ul>
-      <li>
-        <p>
-          <Link href="/article">Article</Link>
-          <br />
-          Published <var>year</var> by <var>author</var>
-        </p>
-      </li>
-      <li>
-        <p>
-          <Link href="/article">Article</Link>
-          <br />
-          Published <var>year</var> by <var>author</var>
-        </p>
-      </li>
-      <li>
-        <p>
-          <Link href="/article">Article</Link>
-          <br />
-          Published <var>year</var> by <var>author</var>
-        </p>
-      </li>
-    </ul>
-  )
+    <ul>{listItems}</ul>
+  );
 }

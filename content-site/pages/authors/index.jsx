@@ -1,9 +1,13 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Header from '../components/header'
-import Footer from '../components/footer'
 
-export default function AuthorsPage () {
+import Header from '../../components/header.jsx'
+import Footer from '../../components/footer.jsx'
+import CollectionsList from '../../components/collections-list.jsx'
+
+import { getAuthors, getUrl } from '../../lib/data.js'
+
+export default function AuthorsPage ({ authors }) {
   return (
     <>
       <Head>
@@ -13,16 +17,15 @@ export default function AuthorsPage () {
       <Header />
 
       <h1>Authors</h1>
-      <ul>
-        <li>
-          <Link href="/author">Author</Link>
-        </li>
-        <li>
-          <Link href="/author">Author</Link>
-        </li>
-      </ul>
+      <CollectionsList collections={authors} type="author" />
 
       <Footer />
     </>
-  )
+  );
+}
+
+export async function getStaticProps() {
+  const authors = getAuthors();
+
+  return { props: { authors } };
 }

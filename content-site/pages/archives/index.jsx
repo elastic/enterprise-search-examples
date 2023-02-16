@@ -1,9 +1,13 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Header from '../components/header'
-import Footer from '../components/footer'
 
-export default function ArchivesPage () {
+import Header from '../../components/header.jsx'
+import Footer from '../../components/footer.jsx'
+import CollectionsList from '../../components/collections-list.jsx'
+
+import { getArchives, getUrl } from '../../lib/data.js'
+
+export default function ArchivesPage ({ archives }) {
   return (
     <>
       <Head>
@@ -13,16 +17,15 @@ export default function ArchivesPage () {
       <Header />
 
       <h1>Archives</h1>
-      <ul>
-        <li>
-          <Link href="/archive">Archive</Link>
-        </li>
-        <li>
-          <Link href="/archive">Archive</Link>
-        </li>
-      </ul>
+      <CollectionsList collections={archives} type="archive" />
 
       <Footer />
     </>
-  )
+  );
+}
+
+export async function getStaticProps() {
+  const archives = getArchives();
+
+  return { props: { archives: archives } };
 }
