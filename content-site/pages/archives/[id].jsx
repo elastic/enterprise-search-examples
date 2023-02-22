@@ -1,8 +1,11 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Header from '../../components/header'
-import Footer from '../../components/footer'
-import ArticlesList from '../../components/articles-list'
+
+import Header from '../../components/header.jsx'
+import Footer from '../../components/footer.jsx'
+import ArticlesList from '../../components/articles-list.jsx'
+
+import { getArchives, getPaths, getElementById } from '../../lib/data.js'
 
 export default function ArchivePage ({ archive }) {
   return (
@@ -23,21 +26,20 @@ export default function ArchivePage ({ archive }) {
 }
 
 export async function getStaticPaths () {
+  const archives = getArchives();
+  const paths = getPaths(archives);
+
   return {
-    paths: [
-      { params: { id: '2022' } },
-      { params: { id: '2023' } }
-    ],
+    paths: paths,
     fallback: false
   };
 }
 
 export async function getStaticProps ({ params }) {
-  const getArchive = function (id) {
-    return { id: id };
-  };
+  const archives = getArchives();
+  const archive = getElementById(archives, params.id);
 
   return {
-    props: { archive: getArchive(params.id) }
+    props: { archive: archive }
   };
 }

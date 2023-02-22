@@ -1,7 +1,10 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Header from '../../components/header'
-import Footer from '../../components/footer'
+
+import Header from '../../components/header.jsx'
+import Footer from '../../components/footer.jsx'
+
+import { getAuthors } from '../../lib/data.js'
 
 export default function AuthorsPage ({ authors }) {
   const getUrl = function (id) {
@@ -36,13 +39,6 @@ export default function AuthorsPage ({ authors }) {
     </>
   );
 }
-
-const getAuthors = function () {
-  return [
-    { id: 'chris', name: 'Chris'},
-    { id: 'alex', name: 'Alex'}
-  ];
-};
 
 export async function getStaticProps() {
   const authors = getAuthors();

@@ -1,8 +1,11 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Header from '../../components/header'
-import Footer from '../../components/footer'
-import ArticlesList from '../../components/articles-list'
+
+import Header from '../../components/header.jsx'
+import Footer from '../../components/footer.jsx'
+import ArticlesList from '../../components/articles-list.jsx'
+
+import { getAuthors, getPaths, getElementById } from '../../lib/data.js'
 
 export default function AuthorPage ({ author }) {
   return (
@@ -23,22 +26,6 @@ export default function AuthorPage ({ author }) {
   );
 }
 
-const getAuthors = function () {
-  return [
-    { id: 'chris', name: 'Chris'},
-    { id: 'alex', name: 'Alex'}
-  ];
-};
-
-const getAuthor = function (id) {
-  const authors = getAuthors();
-  return authors.find(author => author.id === id);
-};
-
-const getPaths = function (collection) {
-  collection.map(element => { params: { id: element.id} } );
-};
-
 export async function getStaticPaths () {
   const authors = getAuthors();
   const paths = getPaths(authors);
@@ -50,7 +37,9 @@ export async function getStaticPaths () {
 }
 
 export async function getStaticProps ({ params }) {
-  const author = getAuthor(params.id);
+  const authors = getAuthors();
+  const author = getElementById(authors, params.id);
+
 
   return {
     props: { author: author }

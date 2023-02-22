@@ -1,7 +1,10 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Header from '../../components/header'
-import Footer from '../../components/footer'
+
+import Header from '../../components/header.jsx'
+import Footer from '../../components/footer.jsx'
+
+import { getArchives } from '../../lib/data.js'
 
 export default function ArchivesPage ({ archives }) {
   const getUrl = function (id) {
@@ -38,14 +41,9 @@ export default function ArchivesPage ({ archives }) {
 }
 
 export async function getStaticProps() {
-  const getArchives = function () {
-    return [
-      { id: '2022' },
-      { id: '2023' }
-    ];
-  };
+  const archives = getArchives();
 
   return {
-    props: { archives: getArchives() }
+    props: { archives: archives }
   };
 }
