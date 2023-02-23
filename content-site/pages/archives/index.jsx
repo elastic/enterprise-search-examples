@@ -3,16 +3,11 @@ import Link from 'next/link'
 
 import Header from '../../components/header.jsx'
 import Footer from '../../components/footer.jsx'
+import CollectionsList from '../../components/collections-list.jsx'
 
 import { getArchives, getUrl } from '../../lib/data.js'
 
 export default function ArchivesPage ({ archives }) {
-  const archivesListItems = archives.map(({ id }) =>
-    <li key={id}>
-      <Link href={getUrl('archive', id)}>{id}</Link>
-    </li>
-  );
-
   return (
     <>
       <Head>
@@ -22,7 +17,7 @@ export default function ArchivesPage ({ archives }) {
       <Header />
 
       <h1>Archives</h1>
-      <ul>{archivesListItems}</ul>
+      <CollectionsList collections={archives} type="archive" />
 
       <Footer />
     </>

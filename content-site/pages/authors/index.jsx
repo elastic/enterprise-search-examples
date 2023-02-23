@@ -3,16 +3,11 @@ import Link from 'next/link'
 
 import Header from '../../components/header.jsx'
 import Footer from '../../components/footer.jsx'
+import CollectionsList from '../../components/collections-list.jsx'
 
 import { getAuthors, getUrl } from '../../lib/data.js'
 
 export default function AuthorsPage ({ authors }) {
-  const authorsListItems = authors.map(({ id, name }) =>
-    <li key={id}>
-      <Link href={getUrl('author', id)}>{name}</Link>
-    </li>
-  );
-
   return (
     <>
       <Head>
@@ -22,7 +17,7 @@ export default function AuthorsPage ({ authors }) {
       <Header />
 
       <h1>Authors</h1>
-      <ul>{authorsListItems}</ul>
+      <CollectionsList collections={authors} type="author" />
 
       <Footer />
     </>

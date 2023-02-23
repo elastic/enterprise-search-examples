@@ -4,21 +4,11 @@ import Link from 'next/link'
 import Header from '../../components/header.jsx'
 import Footer from '../../components/footer.jsx'
 import ArticlesList from '../../components/articles-list.jsx'
+import CollectionsList from '../../components/collections-list.jsx'
 
 import { getArticles, getAuthors, getArchives, getUrl } from '../../lib/data.js'
 
 export default function ArticlesPage ({ articles, authors, archives }) {
-  const archivesListItems = archives.map(({ id }) =>
-    <li key={id}>
-      <Link href={getUrl('archive', id)}>{id}</Link>
-    </li>
-  );
-  const authorsListItems = authors.map(({ id, name }) =>
-    <li key={id}>
-      <Link href={getUrl('author', id)}>{name}</Link>
-    </li>
-  );
-
   return (
     <>
       <Head>
@@ -28,19 +18,25 @@ export default function ArticlesPage ({ articles, authors, archives }) {
       <Header />
 
       <h1>Articles</h1>
+
       <div className="grid">
         <div className="grid-col">
           <div className="content-box">
+
             <p>Most recent:</p>
             <ArticlesList articles={articles} />
+
           </div>
         </div>
         <div className="grid-col">
           <div className="content-box">
+
             <p>By year:</p>
-            <ul>{archivesListItems}</ul>
+            <CollectionsList collections={archives} type="archive" />
+
             <p>By author:</p>
-            <ul>{authorsListItems}</ul>
+            <CollectionsList collections={authors} type="author" />
+
           </div>
         </div>
       </div>
