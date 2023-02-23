@@ -4,25 +4,14 @@ import Link from 'next/link'
 import Header from '../../components/header.jsx'
 import Footer from '../../components/footer.jsx'
 
-import { getArchives } from '../../lib/data.js'
+import { getArchives, getUrl } from '../../lib/data.js'
 
 export default function ArchivesPage ({ archives }) {
-  const getUrl = function (id) {
-    return {
-      pathname: '/archives/[id]',
-      query: { id: id },
-    };
-  };
-
-  const getListItem = function ({ id }) {
-    return (
-      <li key={id}>
-        <Link href={getUrl(id)}>{id}</Link>
-      </li>
-    );
-  };
-
-  const listItems = archives.map(getListItem);
+  const archivesListItems = archives.map(({ id }) =>
+    <li key={id}>
+      <Link href={getUrl('archive', id)}>{id}</Link>
+    </li>
+  );
 
   return (
     <>
@@ -33,7 +22,7 @@ export default function ArchivesPage ({ archives }) {
       <Header />
 
       <h1>Archives</h1>
-      <ul>{listItems}</ul>
+      <ul>{archivesListItems}</ul>
 
       <Footer />
     </>
@@ -43,7 +32,5 @@ export default function ArchivesPage ({ archives }) {
 export async function getStaticProps() {
   const archives = getArchives();
 
-  return {
-    props: { archives: archives }
-  };
+  return { props: { archives: archives } };
 }

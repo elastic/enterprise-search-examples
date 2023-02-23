@@ -1,22 +1,44 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Header from '../components/header'
-import Footer from '../components/footer'
 
-export default function ArticlePage () {
+import Header from '../../components/header.jsx'
+import Footer from '../../components/footer.jsx'
+
+import { getArticles, getPaths, getUrl } from '../../lib/data.js'
+
+export default function ArticlePage ({ article }) {
   return (
     <>
       <Head>
-        <title>Article</title>
+        <title>{article.name}</title>
       </Head>
 
       <Header />
 
-      <h1>Article</h1>
-      <p>Published <Link href="/archive">year</Link> by <Link href="/author">author</Link></p>
-      <p className="content-placeholder"><var>Article content...</var></p>
+      <h1>{article.name}</h1>
+      <p>
+        Published by{' '}
+        <Link href={getUrl('author', article.authorId)}>{article.authorName}</Link>{' '}
+        in {' '}
+        <Link href={getUrl('archive', article.archiveId)}>{article.archiveName}</Link>
+      </p>
+      <div dangerouslySetInnerHTML={{__html: article.content}} />
 
       <Footer />
     </>
   )
+}
+
+export async function getStaticPaths () {
+  const articles = getArticles();
+  const paths = getPaths(articles);
+
+  return { paths, fallback: false };
+}
+
+export async function getStaticProps ({ params }) {
+  const articleId = params.id;
+  const article = getArticles({id: articleId});
+
+  return { props: { article } };
 }

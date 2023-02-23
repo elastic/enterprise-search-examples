@@ -5,9 +5,9 @@ import Header from '../../components/header.jsx'
 import Footer from '../../components/footer.jsx'
 import ArticlesList from '../../components/articles-list.jsx'
 
-import { getArchives, getPaths, getElementById } from '../../lib/data.js'
+import { getArchives, getArticles, getPaths } from '../../lib/data.js'
 
-export default function ArchivePage ({ archive }) {
+export default function ArchivePage ({ archive, articles }) {
   return (
     <>
       <Head>
@@ -18,7 +18,7 @@ export default function ArchivePage ({ archive }) {
 
       <h1>{archive.id}</h1>
 
-      <ArticlesList />
+      <ArticlesList articles={articles} />
 
       <Footer />
     </>
@@ -29,17 +29,13 @@ export async function getStaticPaths () {
   const archives = getArchives();
   const paths = getPaths(archives);
 
-  return {
-    paths: paths,
-    fallback: false
-  };
+  return { paths, fallback: false };
 }
 
 export async function getStaticProps ({ params }) {
-  const archives = getArchives();
-  const archive = getElementById(archives, params.id);
+  const archiveId = params.id;
+  const archive = getArchives({id: archiveId});
+  const articles = getArticles({archiveId: archiveId});
 
-  return {
-    props: { archive: archive }
-  };
+  return { props: { archive, articles } };
 }

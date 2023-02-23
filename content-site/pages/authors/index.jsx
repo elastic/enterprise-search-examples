@@ -4,25 +4,14 @@ import Link from 'next/link'
 import Header from '../../components/header.jsx'
 import Footer from '../../components/footer.jsx'
 
-import { getAuthors } from '../../lib/data.js'
+import { getAuthors, getUrl } from '../../lib/data.js'
 
 export default function AuthorsPage ({ authors }) {
-  const getUrl = function (id) {
-    return {
-      pathname: '/authors/[id]',
-      query: { id: id },
-    };
-  };
-
-  const getListItem = function ({ id, name }) {
-    return (
-      <li key={id}>
-        <Link href={getUrl(id)}>{name}</Link>
-      </li>
-    );
-  };
-
-  const listItems = authors.map(getListItem);
+  const authorsListItems = authors.map(({ id, name }) =>
+    <li key={id}>
+      <Link href={getUrl('author', id)}>{name}</Link>
+    </li>
+  );
 
   return (
     <>
@@ -33,7 +22,7 @@ export default function AuthorsPage ({ authors }) {
       <Header />
 
       <h1>Authors</h1>
-      <ul>{listItems}</ul>
+      <ul>{authorsListItems}</ul>
 
       <Footer />
     </>
@@ -43,7 +32,5 @@ export default function AuthorsPage ({ authors }) {
 export async function getStaticProps() {
   const authors = getAuthors();
 
-  return {
-    props: { authors: authors }
-  };
+  return { props: { authors } };
 }

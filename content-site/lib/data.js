@@ -1,61 +1,70 @@
-export function getArticles () {
-  return [
-    {
-      id: 'foo',
-      name: 'Foo',
-      content: '<p>Content for Foo article.</p>',
-      authorId: 'chris',
-      authorName: 'Chris',
-      archiveId: '2023',
-      archiveName: '2023'
-    },
-    {
-      id: 'bar',
-      name: 'Bar',
-      content: '<p>Bar article content.</p>',
-      authorId: 'alex',
-      authorName: 'Alex',
-      archiveId: '2023',
-      archiveName: '2023'
-    },
-    {
-      id: 'baz',
-      name: 'Baz',
-      content: '<p>The Baz content.</p>',
-      authorId: 'chris',
-      authorName: 'Chris',
-      archiveId: '2022',
-      archiveName: '2022'
-    },
-  ];
+const articles = [
+  {
+    id: 'foo',
+    name: 'Foo',
+    content: '<p>Content for Foo article.</p>',
+    authorId: 'chris',
+    authorName: 'Chris',
+    archiveId: '2023',
+    archiveName: '2023'
+  },
+  {
+    id: 'bar',
+    name: 'Bar',
+    content: '<p>Bar article content.</p>',
+    authorId: 'alex',
+    authorName: 'Alex',
+    archiveId: '2023',
+    archiveName: '2023'
+  },
+  {
+    id: 'baz',
+    name: 'Baz',
+    content: '<p>The Baz content.</p>',
+    authorId: 'chris',
+    authorName: 'Chris',
+    archiveId: '2022',
+    archiveName: '2022'
+  },
+];
+
+export function getArticles ({ id, authorId, archiveId } = {}) {
+  if (id) { return articles.find(e => e.id === id) }
+  if (authorId) { return articles.filter(e => e.authorId === authorId) }
+  if (archiveId) { return articles.filter(e => e.archiveId === archiveId) }
+  return articles;
 }
 
-export function getAuthors () {
+export function getAuthors ({ id } = {}) {
   const articles = getArticles();
   const authorIds = getUniqueIds(
     articles.map(article => article.authorId)
   );
-
-  return authorIds.map((id) => {
+  const authors = authorIds.map((id) => {
     return {
       id: id,
       name: getName(id)
     };
   });
+
+  if (id) { return authors.find(e => e.id === id) }
+  return authors;
 }
 
-export function getArchives () {
+export function getArchives ({ id } = {}) {
   const articles = getArticles();
   const archiveIds = getUniqueIds(
     articles.map(article => article.archiveId)
   );
-
-  return archiveIds.map((id) => {
+  const archives = archiveIds.map((id) => {
     return {
       id: id,
       name: getName(id)
     };
   });
+
+  if (id) { return archives.find(e => e.id === id) }
+  return archives;
 }
 
 export function getPaths (collection) {
@@ -64,10 +73,11 @@ export function getPaths (collection) {
   );
 };
 
-export function getElementById (collection, id) {
-  return collection.find(
-    element => element.id === id
-  );
+export function getUrl (type, id) {
+  return {
+    pathname: `/${type}s/[id]`,
+    query: { id: id },
+  };
 }
 
 function getName (id) {

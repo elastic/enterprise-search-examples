@@ -5,9 +5,9 @@ import Header from '../../components/header.jsx'
 import Footer from '../../components/footer.jsx'
 import ArticlesList from '../../components/articles-list.jsx'
 
-import { getAuthors, getPaths, getElementById } from '../../lib/data.js'
+import { getAuthors, getArticles, getPaths } from '../../lib/data.js'
 
-export default function AuthorPage ({ author }) {
+export default function AuthorPage ({ author, articles }) {
   return (
     <>
       <Head>
@@ -19,7 +19,7 @@ export default function AuthorPage ({ author }) {
       <h1>{author.name}</h1>
       <p className="content-placeholder"><var>Author content...</var></p>
 
-      <ArticlesList />
+      <ArticlesList articles={articles} />
 
       <Footer />
     </>
@@ -30,18 +30,13 @@ export async function getStaticPaths () {
   const authors = getAuthors();
   const paths = getPaths(authors);
 
-  return {
-    paths: paths,
-    fallback: false
-  };
+  return { paths, fallback: false };
 }
 
 export async function getStaticProps ({ params }) {
-  const authors = getAuthors();
-  const author = getElementById(authors, params.id);
+  const authorId = params.id;
+  const author = getAuthors({id: authorId});
+  const articles = getArticles({authorId: authorId});
 
-
-  return {
-    props: { author: author }
-  };
+  return { props: { author, articles } };
 }
