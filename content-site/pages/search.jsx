@@ -1,22 +1,13 @@
-import { useEffect } from 'react'
+import AppSearchAPIConnector from '@elastic/search-ui-app-search-connector'
+import { SearchProvider, ErrorBoundary } from '@elastic/react-search-ui';
+import { useMemo } from 'react'
 import Head from 'next/head'
 import Link from 'next/head'
 
 import Footer from '../components/footer.jsx'
 
 export default function SearchPage () {
-  //const [data, setData] = useState(null)
-
-  useEffect(() => {
-    //setLoading(true)
-    //fetch('/api/profile-data')
-      //.then((res) => res.json())
-      //.then((data) => {
-        //setData(data)
-        //setLoading(false)
-      //})
-    console.log('using effect');
-  }, [])
+  const searchProviderConfig = useMemo(getSearchProviderConfig, []);
 
   return (
     <>
@@ -33,34 +24,53 @@ export default function SearchPage () {
         </li>
       </ul>
 
-      <p className="search-bar">
-        <input type="search" />
-        &nbsp;
-        <input type="submit" value="Search" />
-      </p>
+      <SearchProvider config={searchProviderConfig}>
+        <ErrorBoundary>
 
-      <h1>Search</h1>
+          <p className="search-bar">
+            <input type="search" />
+            &nbsp;
+            <input type="submit" value="Search" />
+          </p>
 
-      <div className="grid">
-        <div className="grid-col">
-          <div className="content-box">
+          <h1>Search</h1>
 
-            <p>Results:</p>
+          <div className="grid">
+            <div className="grid-col">
+              <div className="content-box">
 
+                <p>Results:</p>
+
+              </div>
+            </div>
+            <div className="grid-col">
+              <div className="content-box">
+
+                <p>By year:</p>
+
+                <p>By author:</p>
+
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="grid-col">
-          <div className="content-box">
 
-            <p>By year:</p>
-
-            <p>By author:</p>
-
-          </div>
-        </div>
-      </div>
+        </ErrorBoundary>
+      </SearchProvider>
 
       <Footer />
     </>
   )
+}
+
+function getSearchProviderConfig () {
+  //make sure this is called only once per page load
+  console.log('Getting search provider config');
+
+  const endpointBase = 'https://enterprise-search-8-6-1-4gb-ram.ent.us-central1.gcp.cloud.es.io';
+  const engineName = 'content-site';
+  const searchKey = 'search-se4wspv888i3itjnqghpm954';
+  const apiConnectorConfig = { endpointBase, engineName, searchKey };
+  const apiConnector = new AppSearchAPIConnector(apiConnectorConfig);
+
+  return { apiConnector };
 }
