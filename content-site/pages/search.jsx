@@ -1,5 +1,10 @@
 import AppSearchAPIConnector from '@elastic/search-ui-app-search-connector'
-import { SearchProvider, ErrorBoundary } from '@elastic/react-search-ui';
+import {
+  SearchProvider,
+  ErrorBoundary,
+  SearchBox,
+  Results
+} from '@elastic/react-search-ui';
 import { useMemo } from 'react'
 import Head from 'next/head'
 import Link from 'next/head'
@@ -25,21 +30,19 @@ export default function SearchPage () {
       </ul>
 
       <SearchProvider config={searchProviderConfig}>
+
+        <SearchBox />
+
+        <h1>Search</h1>
+
         <ErrorBoundary>
-
-          <p className="search-bar">
-            <input type="search" />
-            &nbsp;
-            <input type="submit" value="Search" />
-          </p>
-
-          <h1>Search</h1>
 
           <div className="grid">
             <div className="grid-col">
               <div className="content-box">
 
                 <p>Results:</p>
+                <Results titleField="title" urlField="url" />
 
               </div>
             </div>
@@ -55,6 +58,7 @@ export default function SearchPage () {
           </div>
 
         </ErrorBoundary>
+
       </SearchProvider>
 
       <Footer />
@@ -63,14 +67,22 @@ export default function SearchPage () {
 }
 
 function getSearchProviderConfig () {
-  //make sure this is called only once per page load
-  console.log('Getting search provider config');
-
   const endpointBase = 'https://enterprise-search-8-6-1-4gb-ram.ent.us-central1.gcp.cloud.es.io';
   const engineName = 'content-site';
   const searchKey = 'search-se4wspv888i3itjnqghpm954';
   const apiConnectorConfig = { endpointBase, engineName, searchKey };
   const apiConnector = new AppSearchAPIConnector(apiConnectorConfig);
 
-  return { apiConnector };
+  const search_fields = {
+    title: {},
+    headings: {},
+    body_content: {}
+  };
+  const result_fields = {
+    title: { raw: {} },
+    url: { raw: {} }
+  };
+  const searchQuery = { search_fields, result_fields };
+
+  return { apiConnector, searchQuery };
 }
