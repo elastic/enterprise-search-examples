@@ -3,7 +3,12 @@ import {
   SearchProvider,
   ErrorBoundary,
   SearchBox,
-  Results
+  Results,
+  Facet,
+  Sorting,
+  ResultsPerPage,
+  PagingInfo,
+  Paging
 } from '@elastic/react-search-ui';
 import { useMemo } from 'react'
 import Head from 'next/head'
@@ -11,7 +16,7 @@ import Link from 'next/head'
 
 import Footer from '../components/footer.jsx'
 
-export default function SearchPage () {
+export default function SearchPage ({ sortOptions, resultsPerPageOptions }) {
   const searchProviderConfig = useMemo(getSearchProviderConfig, []);
 
   return (
@@ -42,6 +47,10 @@ export default function SearchPage () {
               <div className="content-box">
 
                 <p>Results:</p>
+                <Sorting sortOptions={sortOptions} />
+                <ResultsPerPage options={resultsPerPageOptions} />
+                <PagingInfo />
+                <Paging />
                 <Results titleField="title" urlField="url" />
 
               </div>
@@ -50,8 +59,10 @@ export default function SearchPage () {
               <div className="content-box">
 
                 <p>By year:</p>
+                <Facet field="archive" />
 
                 <p>By author:</p>
+                <Facet field="author" />
 
               </div>
             </div>
@@ -66,6 +77,24 @@ export default function SearchPage () {
   )
 }
 
+export async function getStaticProps () {
+  const sortOptions = [
+    {
+      name: 'Relevance',
+      value: '',
+      direction: ''
+    },
+    {
+      name: 'Title',
+      value: 'title',
+      direction: 'asc'
+    }
+  ];
+  const resultsPerPageOptions = [1, 5, 10, 20];
+
+  return { props: { sortOptions, resultsPerPageOptions } };
+}
+
 function getSearchProviderConfig () {
   const endpointBase = 'https://enterprise-search-8-6-1-4gb-ram.ent.us-central1.gcp.cloud.es.io';
   const engineName = 'content-site';
@@ -76,13 +105,20 @@ function getSearchProviderConfig () {
   const search_fields = {
     title: {},
     headings: {},
-    body_content: {}
+    body_content: {},
+    author: {},
+    archive: {}
   };
   const result_fields = {
     title: { raw: {} },
-    url: { raw: {} }
+    url: { raw: {} },
+    body_content: { raw: {} }
   };
-  const searchQuery = { search_fields, result_fields };
+  const facets = {
+    author: { type: "value" },
+    archive: { type: "value" }
+  };
+  const searchQuery = { search_fields, result_fields, facets };
 
   return { apiConnector, searchQuery };
 }
