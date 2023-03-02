@@ -12,6 +12,7 @@ export default function ArchivesPage ({ archives }) {
     <>
       <Head>
         <title>Archives</title>
+        <meta name="robots" content="noindex" />
       </Head>
 
       <Header />

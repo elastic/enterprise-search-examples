@@ -17,10 +17,14 @@ export default function ArticlePage ({ article }) {
 
       <h1>{article.name}</h1>
       <p>
-        Published by{' '}
-        <Link href={getUrl('author', article.authorId)}>{article.authorName}</Link>{' '}
-        in {' '}
-        <Link href={getUrl('archive', article.archiveId)}>{article.archiveName}</Link>
+        Published by {' '}
+        <Link href={getUrl('author', article.authorId)} data-elastic-name="author">
+          {article.authorName}
+        </Link>
+        {' '} in {' '}
+        <Link href={getUrl('archive', article.archiveId)} data-elastic-name="archive">
+          {article.archiveName}
+        </Link>
       </p>
       <div dangerouslySetInnerHTML={{__html: article.content}} />
 
